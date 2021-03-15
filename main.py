@@ -1,16 +1,16 @@
 import tweepy
 
-consumer_key = 'tKO8QEjoehEMKmSiWQLE9vh8o'
-consumer_secret = '9AbddZs2DyHy1CwP7mrJ7OypDHcK3APGg8LbT9pq2BEgTD5ikk'
-access_token = '1371467095972585474-GB9VBsnzOArtcsXgt4VmaTyjBDrAbt'
-access_token_secret = 'WCIMsdfaqGGkTN2I8gUPCsbajfDPVPCBxPYH1N4f1DUBZ'
+consumer_key = 'GIWsX69vEJKFhSWDcrLY42nfN'
+consumer_secret = '2UlvfJDRyjhPr3tFRck8BmxIrXSGGeNGrbFAjCs58IrTIULYpi'
+access_token = '2741307938-PSB4fMuoJesPPHrYPnCrZudzRuJcWM54HcBej9D'
+access_token_secret = 'SZisTjWDRWrQntGyjkaREvDD1a0OFz5XHg0AMcGio60Qs'
 
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
 
 api = tweepy.API(auth)
 
-api.update_status("Hello World via Tweepy!!")
+api.update_status("Hello World via Tweepy!!/nby Heroku")
 
 # public_tweets = api.home_timeline()
 # for tweet in public_tweets:
