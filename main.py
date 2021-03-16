@@ -29,7 +29,7 @@ else:
 count = 0
 for tweet in fav_tweets:
   count += 1
-  # api.create_favorite(id=tweet.id)
+  api.create_favorite(id=tweet.id)
   print('\n==================================\n')
   print(f'No.{count}\n')
   print(tweet.text)
