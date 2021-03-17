@@ -1,5 +1,6 @@
 import os
 import random
+import datetime
 import tweepy
 
 consumer_key = os.environ['CONSUMER_KEY']
