@@ -1,6 +1,5 @@
 import os
 import random
-import datetime
 import tweepy
 
 consumer_key = os.environ['CONSUMER_KEY']
@@ -15,11 +14,8 @@ api = tweepy.API(auth)
 
 # 仕様
 # 検索ワード・RT除外・いいね数下限設定で適切なツイートのみ取得
-# そのうち今日投稿されたもののみいいねとリプライ
-# これはいいねが重複してエラーになるのを防ぐため
-# ほんとはfavoritedで判定したいけど反映されないし...
-# Herokuのスケジューラを23:30に設定してその日の投稿をできるだけ取得
-
+# いいねをしているかどうかで既にリプを送っているか判定
+# そのため手動ふぁぼは「#春から名大 よろしく」を避けること
 
 limit = 25
 get_count = limit * 3 # 数に余裕を持たせてツイートを取得
@@ -67,15 +63,13 @@ else:
 count = 0
 for tweet in fav_tweets:
   count += 1
-  # 今日投稿されたものならふぁぼ＆リプ
-  created_at = datetime.datetime.strptime(f"{tweet.created_at}".split()[0], '%Y-%m-%d').date()
-  today = datetime.date.today()
-  if created_at == today:
+  # ふぁぼ＆リプ
+  try:
     # いいね処理
     api.create_favorite(id=tweet.id)
 
-    # リプライ処理
-    reply_msg = msgs_1.choice() + msgs_2.choice() + msgs_3.choice()
+    # リプライ処理／いいねで既にリプを送っているか判定する
+    reply_msg = f'@{ tweet.user.screen_name } ' + random.choice(msgs_1) + random.choice(msgs_2) + random.choice(msgs_3)
     api.update_status(reply_msg, in_reply_to_status_id=tweet.id)
 
     print('\n==================================\n')
@@ -85,15 +79,13 @@ for tweet in fav_tweets:
     print("Like:", tweet.favorite_count)
     print(tweet.created_at)
     print(">", reply_msg)
-  else:
+  except:
     print('\n==================================\n')
     print(f'No.{count}\n')
-    print("投稿日が今日じゃないみたい")
-    print('\n==================================\n')
+    print("いいね済みだよ！")
 
 
 print('\n==================================\n')
 print(f"target_tweetsの要素数(max: {get_count}): {len(target_tweets)}")
 print(f"fav_tweetsの要素数(max: 25): {len(fav_tweets)}")
-print(f"countの要素数(fav_tweetsの中で今日投稿されたもの): {count}")
 print('')
